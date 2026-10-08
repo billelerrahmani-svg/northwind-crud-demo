@@ -1,0 +1,224 @@
+<p-toast />
+<p-confirmdialog />
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Sidebar : contenu contextuel selon la section active, masquée sur l'accueil -->
+  @if (currentSection() !== 'home') {
+
+    <aside
+      class="surface-card app-border-end surface-border transition-duration-200"
+      [class.w-18rem]="!collapsed()"
+      [class.w-5rem]="collapsed()">
+
+      <div class="flex flex-column h-full">
+
+        <div class="p-3 border-bottom-1 surface-border text-center">
+          <h3 class="m-0">{{ 'layout.appTitle' | translate }}</h3>
+        </div>
+
+        <nav class="flex-1 overflow-auto p-2">
+
+          @if (currentSection() === 'exploitation') {
+
+            <div class="text-500 text-sm font-semibold mb-2 px-2">
+              {{ 'layout.exploitation' | translate }}
+            </div>
+
+            @for (item of exploitationItems; track item.route) {
+
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="bg-primary text-primary-contrast"
+                class="flex align-items-center gap-2 p-2 border-round no-underline text-color hover:surface-hover transition-duration-150">
+
+                <i [class]="item.icon"></i>
+
+                @if (!collapsed()) {
+                  <span>{{ item.label | translate }}</span>
+                }
+
+              </a>
+
+            }
+
+          }
+
+          @if (currentSection() === 'reporting') {
+
+            <div class="text-500 text-sm font-semibold mb-2 px-2">
+              {{ 'layout.reporting' | translate }}
+            </div>
+
+            @for (item of reportingItems; track item.route) {
+
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="bg-primary text-primary-contrast"
+                class="flex align-items-center gap-2 p-2 border-round no-underline text-color hover:surface-hover transition-duration-150">
+
+                <i [class]="item.icon"></i>
+
+                @if (!collapsed()) {
+                  <span>{{ item.label | translate }}</span>
+                }
+
+              </a>
+
+            }
+
+          }
+
+          @if (currentSection() === 'admin' && isAdmin()) {
+
+            <div class="text-500 text-sm font-semibold mb-2 px-2">
+              {{ 'layout.adminSection' | translate }}
+            </div>
+
+            <a
+              routerLink="/admin/users"
+              routerLinkActive="bg-primary text-primary-contrast"
+              class="flex align-items-center gap-2 p-2 border-round no-underline text-color hover:surface-hover">
+
+              <i class="pi pi-users"></i>
+
+              @if (!collapsed()) {
+                <span>{{ 'admin.users.title' | translate }}</span>
+              }
+
+            </a>
+
+            <a
+              routerLink="/admin/roles"
+              routerLinkActive="bg-primary text-primary-contrast"
+              class="flex align-items-center gap-2 p-2 border-round no-underline text-color hover:surface-hover">
+
+              <i class="pi pi-sitemap"></i>
+
+              @if (!collapsed()) {
+                <span>{{ 'admin.roles.title' | translate }}</span>
+              }
+
+            </a>
+
+            <a
+              routerLink="/admin/api-keys"
+              routerLinkActive="bg-primary text-primary-contrast"
+              class="flex align-items-center gap-2 p-2 border-round no-underline text-color hover:surface-hover">
+
+              <i class="pi pi-key"></i>
+
+              @if (!collapsed()) {
+                <span>{{ 'admin.apiKeys.title' | translate }}</span>
+              }
+
+            </a>
+
+          }
+
+        </nav>
+
+      </div>
+
+    </aside>
+
+  }
+
+  <!-- Main -->
+  <div class="flex flex-column flex-1 overflow-hidden">
+
+    <header class="flex align-items-center gap-3 px-4 py-3 surface-card border-bottom-1 surface-border">
+
+      @if (currentSection() !== 'home') {
+        <button
+          pButton
+          type="button"
+          icon="pi pi-bars"
+          severity="secondary"
+          text
+          rounded
+          (click)="toggleSidebar()">
+        </button>
+      }
+
+      <span class="text-xl font-semibold">
+        {{ 'layout.appTitle' | translate }}
+      </span>
+
+      <div class="flex-1"></div>
+
+      <div class="flex gap-2">
+
+        <a
+          pButton
+          routerLink="/home"
+          [label]="'layout.home' | translate"
+          text>
+        </a>
+
+        <a
+          pButton
+          routerLink="/exploitation"
+          [label]="'layout.exploitation' | translate"
+          text>
+        </a>
+
+        <a
+          pButton
+          routerLink="/reporting"
+          [label]="'layout.reporting' | translate"
+          text>
+        </a>
+
+        @if (isAdmin()) {
+
+          <a
+            pButton
+            routerLink="/admin"
+            [label]="'layout.admin' | translate"
+            text>
+          </a>
+
+        }
+
+      </div>
+      
+      @for (opt of languageOptions; track opt.value) {
+        <button
+          pButton
+          type="button"
+          [label]="opt.label"
+          size="small"
+          text
+          [severity]="language.currentLang() === opt.value ? 'primary' : 'secondary'"
+          (click)="onLanguageChange(opt.value)">
+        </button>
+      }
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-user"
+        severity="secondary"
+        text
+        rounded
+        (click)="userMenu.toggle($event)">
+      </button>
+
+      <p-menu
+        #userMenu
+        [model]="userMenuItems"
+        [popup]="true">
+      </p-menu>
+
+    </header>
+
+    <main class="flex-1 overflow-auto p-4 surface-ground">
+      <router-outlet />
+    </main>
+
+  </div>
+
+</div>
+
+
+<app-change-password [(visible)]="changePasswordVisible" />

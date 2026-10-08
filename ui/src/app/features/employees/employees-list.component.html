@@ -1,0 +1,158 @@
+            <div class="flex justify-content-between align-items-center mb-4">
+              <h2 class="m-0">{{ 'entities.employees' | translate }}</h2>
+              <div class="flex gap-2">
+                <button
+                  pButton
+                  type="button"
+                  [label]="'common.export' | translate"
+                  icon="pi pi-file-excel"
+                  severity="secondary"
+                  outlined
+                  [disabled]="!totalRecords()"
+                  (click)="exportExcel()">
+                </button>
+                @if (canAdd) {
+                  <button
+                    pButton
+                    type="button"
+                    [label]="'common.add' | translate"
+                    icon="pi pi-plus"
+                    (click)="openCreate()">
+                  </button>
+                }
+              </div>
+            </div>
+
+            <p-table
+              #dt
+              [value]="items()"
+              [lazy]="true"
+              (onLazyLoad)="load($event)"
+              [totalRecords]="totalRecords()"
+              [loading]="loading()"
+              [paginator]="true"
+              [rows]="15"
+              [rowsPerPageOptions]="[15, 25, 50]"
+              [resizableColumns]="true"
+              [rowHover]="true"
+              styleClass="p-datatable-striped p-datatable-gridlines"
+              responsiveLayout="scroll">
+
+              <ng-template pTemplate="caption">
+                <div class="flex justify-content-end">
+                  <input
+                    pInputText
+                    type="text"
+                    [placeholder]="'table.searchPlaceholder' | translate"
+                    (input)="onGlobalSearch($any($event.target).value, dt)">
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="lastname">
+                    {{ 'fields.employees.lastname' | translate }} <p-sortIcon field="lastname" />
+                  </th>
+                  <th pSortableColumn="firstname">
+                    {{ 'fields.employees.firstname' | translate }} <p-sortIcon field="firstname" />
+                  </th>
+                  <th pSortableColumn="title">
+                    {{ 'fields.employees.title' | translate }} <p-sortIcon field="title" />
+                  </th>
+                  <th pSortableColumn="titleofcourtesy">
+                    {{ 'fields.employees.titleofcourtesy' | translate }} <p-sortIcon field="titleofcourtesy" />
+                  </th>
+                  <th pSortableColumn="birthdate">
+                    {{ 'fields.employees.birthdate' | translate }} <p-sortIcon field="birthdate" />
+                  </th>
+                  <th pSortableColumn="hiredate">
+                    {{ 'fields.employees.hiredate' | translate }} <p-sortIcon field="hiredate" />
+                  </th>
+                  <th pSortableColumn="address">
+                    {{ 'fields.employees.address' | translate }} <p-sortIcon field="address" />
+                  </th>
+                  <th pSortableColumn="city">
+                    {{ 'fields.employees.city' | translate }} <p-sortIcon field="city" />
+                  </th>
+                  <th pSortableColumn="region">
+                    {{ 'fields.employees.region' | translate }} <p-sortIcon field="region" />
+                  </th>
+                  <th pSortableColumn="postalcode">
+                    {{ 'fields.employees.postalcode' | translate }} <p-sortIcon field="postalcode" />
+                  </th>
+                  <th pSortableColumn="country">
+                    {{ 'fields.employees.country' | translate }} <p-sortIcon field="country" />
+                  </th>
+                  <th pSortableColumn="homephone">
+                    {{ 'fields.employees.homephone' | translate }} <p-sortIcon field="homephone" />
+                  </th>
+                  <th pSortableColumn="extension">
+                    {{ 'fields.employees.extension' | translate }} <p-sortIcon field="extension" />
+                  </th>
+                  <th pSortableColumn="photo">
+                    {{ 'fields.employees.photo' | translate }} <p-sortIcon field="photo" />
+                  </th>
+                  <th pSortableColumn="notes">
+                    {{ 'fields.employees.notes' | translate }} <p-sortIcon field="notes" />
+                  </th>
+                  <th pSortableColumn="reportsto">
+                    {{ 'fields.employees.reportsto' | translate }} <p-sortIcon field="reportsto" />
+                  </th>
+                  <th pSortableColumn="photopath">
+                    {{ 'fields.employees.photopath' | translate }} <p-sortIcon field="photopath" />
+                  </th>
+
+                  @if (canEditRow || canDeleteRow) {
+                    <th style="width:8rem"></th>
+                  }
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-item>
+                <tr>
+                  <td>{{ item.lastname }}</td>
+                  <td>{{ item.firstname }}</td>
+                  <td>{{ item.title }}</td>
+                  <td>{{ item.titleofcourtesy }}</td>
+                  <td>{{ item.birthdate | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.hiredate | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.address }}</td>
+                  <td>{{ item.city }}</td>
+                  <td>{{ item.region }}</td>
+                  <td>{{ item.postalcode }}</td>
+                  <td>{{ item.country }}</td>
+                  <td>{{ item.homephone }}</td>
+                  <td>{{ item.extension }}</td>
+                  <td>{{ item.photo }}</td>
+                  <td>{{ item.notes }}</td>
+                  <td>{{ item.reportsto | number:'1.0-2':'fr-FR' }}</td>
+                  <td>{{ item.photopath }}</td>
+
+                  @if (canEditRow || canDeleteRow) {
+                    <td>
+                      <div class="flex justify-content-end gap-2">
+                        @if (canEditRow) {
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-pencil"
+                            text
+                            (click)="openEdit(item)">
+                          </button>
+                        }
+                        @if (canDeleteRow) {
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-trash"
+                            severity="danger"
+                            text
+                            (click)="confirmDelete(item)">
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+            </p-table>

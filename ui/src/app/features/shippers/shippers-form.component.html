@@ -1,0 +1,23 @@
+<p-card [header]="isEdit() ? ('table.editTitle' | translate) : ('table.addTitle' | translate)">
+  <form [formGroup]="form">
+    <div class="formgrid grid">
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.shippers.companyname' | translate }}</label>
+    <input pInputText formControlName="companyname" class="w-full" maxlength="40" />
+    <app-field-error [control]="form.get('companyname')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.shippers.phone' | translate }}</label>
+    <input pInputText formControlName="phone" class="w-full" maxlength="24" />
+    <app-field-error [control]="form.get('phone')" />
+  </div>
+
+    </div>
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button pButton type="button" [label]="'common.cancel' | translate" text (click)="onCancel()"></button>
+      <!-- Volontairement actif même si le formulaire est invalide : le clic
+           fait alors apparaître les messages sous les champs fautifs. -->
+      <button pButton type="button" [label]="'common.save' | translate" (click)="onSave()"></button>
+    </div>
+  </form>
+</p-card>

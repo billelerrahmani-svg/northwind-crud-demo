@@ -1,0 +1,133 @@
+<p-card [header]="isEdit() ? ('table.editTitle' | translate) : ('table.addTitle' | translate)">
+  <form [formGroup]="form">
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6">
+        <label>{{ 'fields.employeeterritories.employeeid' | translate }}</label>
+        <div class="flex gap-2">
+          <input pInputText class="w-full flex-1" [value]="EmployeeidDisplay()" readonly />
+          <button pButton type="button" icon="pi pi-search" [disabled]="isEdit()" (click)="openEmployeeidPicker()"></button>
+        </div>
+    <app-field-error [control]="form.get('employeeid')" />
+      </div>
+      <div class="field col-12 md:col-6">
+        <label>{{ 'fields.employeeterritories.territoryid' | translate }}</label>
+        <div class="flex gap-2">
+          <input pInputText class="w-full flex-1" [value]="TerritoryidDisplay()" readonly />
+          <button pButton type="button" icon="pi pi-search" [disabled]="isEdit()" (click)="openTerritoryidPicker()"></button>
+        </div>
+    <app-field-error [control]="form.get('territoryid')" />
+      </div>
+
+    </div>
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button pButton type="button" [label]="'common.cancel' | translate" text (click)="onCancel()"></button>
+      <!-- Volontairement actif même si le formulaire est invalide : le clic
+           fait alors apparaître les messages sous les champs fautifs. -->
+      <button pButton type="button" [label]="'common.save' | translate" (click)="onSave()"></button>
+    </div>
+  </form>
+</p-card>
+
+<p-dialog
+  [header]="'fields.employeeterritories.employeeid' | translate"
+  [(visible)]="EmployeeidPickerVisible"
+  [modal]="true"
+  [style]="{ width: '50rem' }">
+  <input
+    pInputText
+    type="text"
+    class="w-full mb-3"
+    [placeholder]="'table.searchPlaceholder' | translate"
+    (input)="onEmployeeidPickerSearch($any($event.target).value, EmployeeidDt)">
+  <p-table
+    #EmployeeidDt
+    [value]="EmployeeidPickerRows()"
+    [lazy]="true"
+    (onLazyLoad)="onEmployeeidPickerLoad($event)"
+    [totalRecords]="EmployeeidPickerTotal()"
+    [loading]="EmployeeidPickerLoading()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'fields.employees.lastname' | translate }}</th>
+        <th>{{ 'fields.employees.firstname' | translate }}</th>
+        <th>{{ 'fields.employees.title' | translate }}</th>
+        <th>{{ 'fields.employees.titleofcourtesy' | translate }}</th>
+        <th>{{ 'fields.employees.birthdate' | translate }}</th>
+        <th>{{ 'fields.employees.hiredate' | translate }}</th>
+        <th>{{ 'fields.employees.address' | translate }}</th>
+        <th>{{ 'fields.employees.city' | translate }}</th>
+        <th>{{ 'fields.employees.region' | translate }}</th>
+        <th>{{ 'fields.employees.postalcode' | translate }}</th>
+        <th>{{ 'fields.employees.country' | translate }}</th>
+        <th>{{ 'fields.employees.homephone' | translate }}</th>
+        <th>{{ 'fields.employees.extension' | translate }}</th>
+        <th>{{ 'fields.employees.photo' | translate }}</th>
+        <th>{{ 'fields.employees.notes' | translate }}</th>
+        <th>{{ 'fields.employees.reportsto' | translate }}</th>
+        <th>{{ 'fields.employees.photopath' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr class="cursor-pointer" (click)="selectEmployeeid(row)">
+        <td>{{ row.lastname }}</td>
+        <td>{{ row.firstname }}</td>
+        <td>{{ row.title }}</td>
+        <td>{{ row.titleofcourtesy }}</td>
+        <td>{{ row.birthdate }}</td>
+        <td>{{ row.hiredate }}</td>
+        <td>{{ row.address }}</td>
+        <td>{{ row.city }}</td>
+        <td>{{ row.region }}</td>
+        <td>{{ row.postalcode }}</td>
+        <td>{{ row.country }}</td>
+        <td>{{ row.homephone }}</td>
+        <td>{{ row.extension }}</td>
+        <td>{{ row.photo }}</td>
+        <td>{{ row.notes }}</td>
+        <td>{{ row.reportsto }}</td>
+        <td>{{ row.photopath }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>
+
+<p-dialog
+  [header]="'fields.employeeterritories.territoryid' | translate"
+  [(visible)]="TerritoryidPickerVisible"
+  [modal]="true"
+  [style]="{ width: '50rem' }">
+  <input
+    pInputText
+    type="text"
+    class="w-full mb-3"
+    [placeholder]="'table.searchPlaceholder' | translate"
+    (input)="onTerritoryidPickerSearch($any($event.target).value, TerritoryidDt)">
+  <p-table
+    #TerritoryidDt
+    [value]="TerritoryidPickerRows()"
+    [lazy]="true"
+    (onLazyLoad)="onTerritoryidPickerLoad($event)"
+    [totalRecords]="TerritoryidPickerTotal()"
+    [loading]="TerritoryidPickerLoading()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'fields.territories.territoryid' | translate }}</th>
+        <th>{{ 'fields.territories.territorydescription' | translate }}</th>
+        <th>{{ 'fields.territories.regionid' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr class="cursor-pointer" (click)="selectTerritoryid(row)">
+        <td>{{ row.territoryid }}</td>
+        <td>{{ row.territorydescription }}</td>
+        <td>{{ row.regionid }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>

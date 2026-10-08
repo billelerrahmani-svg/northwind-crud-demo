@@ -1,0 +1,40 @@
+{
+  "host": "localhost",
+  "port": 1433,
+  "database": "Northwind",
+  "schema": "dbo",
+  "username": "northwind_demo",
+  "selectedTables": [
+    "Categories",
+    "Customers",
+    "Employees",
+    "EmployeeTerritories",
+    "Order Details",
+    "Orders",
+    "Products",
+    "Region",
+    "Shippers",
+    "Suppliers",
+    "Territories",
+    "Current Product List"
+  ],
+  "manualPrimaryKeys": {
+    "Current Product List": [
+      "ProductID"
+    ]
+  },
+  "basePackage": "com.example.northwind",
+  "artifactId": "northwind-api",
+  "apiOutputDir": "./api",
+  "useLombok": true,
+  "includeSecurity": true,
+  "useAdAuth": false,
+  "generateScaffold": true,
+  "forceOverwrite": false,
+  "generateAngular": true,
+  "angularOutputDir": "./ui",
+  "angularProjectName": "northwind-ui",
+  "angularApiBaseUrl": "http://localhost:8080",
+  "angularTemplate": "SIDEBAR",
+  "useI18n": true
+}

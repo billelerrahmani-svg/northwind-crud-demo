@@ -1,0 +1,85 @@
+<div class="flex justify-content-center align-items-center min-h-screen surface-ground">
+  <div class="surface-card p-5 shadow-4 border-round w-full md:w-30rem">
+
+    <div class="flex justify-content-center gap-2 mb-4">
+      @for (opt of languageOptions; track opt.value) {
+        <button
+          pButton
+          type="button"
+          [label]="opt.label"
+          size="small"
+          [outlined]="language.currentLang() !== opt.value"
+          (click)="onLanguageChange(opt.value)">
+        </button>
+      }
+    </div>
+
+    <h2 class="text-center mb-5">{{ 'auth.login.title' | translate }}</h2>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      novalidate
+      autocomplete="off"
+      class="flex flex-column gap-4">
+
+      <div class="flex flex-column gap-2">
+        <label for="username">{{ 'auth.login.username' | translate }}</label>
+
+        <input
+          pInputText
+          id="username"
+          formControlName="username"
+          autocomplete="username"
+          autofocus />
+
+        @if (loginForm.controls.username.invalid &&
+              loginForm.controls.username.touched) {
+          <small class="p-error">
+            {{ 'auth.login.usernameRequired' | translate }}
+          </small>
+        }
+
+      </div>
+
+      <div class="flex flex-column gap-2">
+        <label for="password">{{ 'auth.login.password' | translate }}</label>
+
+        <p-password
+          id="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          [fluid]="true"
+          autocomplete="current-password">
+        </p-password>
+
+        @if (loginForm.controls.password.invalid &&
+              loginForm.controls.password.touched) {
+          <small class="p-error">
+            {{ 'auth.login.passwordRequired' | translate }}
+          </small>
+        }
+
+      </div>
+
+      @if (errorMessage()) {
+        <p-message
+          severity="error"
+          [text]="errorMessage()">
+        </p-message>
+      }
+
+      <button
+        pButton
+        type="submit"
+        [label]="'auth.login.submit' | translate"
+        class="w-full"
+        [loading]="loading()"
+        [disabled]="loading() || loginForm.invalid">
+      </button>
+
+    </form>
+
+  </div>
+</div>

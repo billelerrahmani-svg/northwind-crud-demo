@@ -1,0 +1,165 @@
+<div class="flex justify-content-between align-items-center mb-4">
+  <h2 class="m-0">{{ 'admin.roles.title' | translate }}</h2>
+
+  <button
+    pButton
+    type="button"
+    [label]="'admin.roles.add' | translate"
+    icon="pi pi-plus"
+    (click)="openCreate()">
+  </button>
+</div>
+
+<p-table
+  [value]="roles()"
+  [loading]="loading()"
+  [paginator]="true"
+  [rows]="10"
+  responsiveLayout="scroll">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>{{ 'admin.roles.code' | translate }}</th>
+      <th>{{ 'admin.roles.designation' | translate }}</th>
+      <th style="width:12rem"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-role>
+    <tr>
+
+      <td>{{ role.userrole }}</td>
+
+      <td>{{ role.designation }}</td>
+
+      <td>
+        <div class="flex gap-2 justify-content-end">
+
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            text
+            (click)="openEdit(role)">
+          </button>
+
+          <button
+            pButton
+            type="button"
+            icon="pi pi-shield"
+            text
+            (click)="openPermissions(role)">
+          </button>
+
+          @if (!isBuiltIn(role)) {
+            <button
+              pButton
+              type="button"
+              icon="pi pi-trash"
+              severity="danger"
+              text
+              (click)="confirmDelete(role)">
+            </button>
+          }
+
+        </div>
+      </td>
+
+    </tr>
+  </ng-template>
+
+</p-table>
+
+<p-dialog
+  [header]="'admin.roles.dialogTitle' | translate"
+  [visible]="formVisible()"
+  (visibleChange)="formVisible.set($event)"
+  [modal]="true"
+  [style]="{ width: '26rem' }">
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSave()"
+    class="flex flex-column gap-4"
+    novalidate>
+
+    <div class="flex flex-column gap-2">
+
+      <label for="userrole">{{ 'admin.roles.codeHint' | translate }}</label>
+
+      <input
+        pInputText
+        id="userrole"
+        formControlName="userrole"
+        maxlength="3"
+        [readonly]="!isNew()" />
+
+    </div>
+
+    <div class="flex flex-column gap-2">
+
+      <label for="designation">{{ 'admin.roles.designation' | translate }}</label>
+
+      <input
+        pInputText
+        id="designation"
+        formControlName="designation" />
+
+    </div>
+
+    <ng-template pTemplate="footer">
+
+      <button
+        pButton
+        type="button"
+        [label]="'common.cancel' | translate"
+        severity="secondary"
+        text
+        (click)="onHideForm()">
+      </button>
+
+      <button
+        pButton
+        type="submit"
+        [label]="'common.save' | translate">
+      </button>
+
+    </ng-template>
+
+  </form>
+
+</p-dialog>
+
+<p-dialog
+  [header]="'admin.roles.permissionsTitle' | translate"
+  [visible]="permissionsVisible()"
+  (visibleChange)="permissionsVisible.set($event)"
+  [modal]="true"
+  [style]="{ width: '40rem' }">
+
+  <app-permission-matrix
+    [rows]="permissionRows()"
+    (rowsChange)="onPermissionRowsChange($event)">
+  </app-permission-matrix>
+
+  <ng-template pTemplate="footer">
+
+    <button
+      pButton
+      type="button"
+      [label]="'common.cancel' | translate"
+      severity="secondary"
+      text
+      (click)="permissionsVisible.set(false)">
+    </button>
+
+    <button
+      pButton
+      type="button"
+      [label]="'common.save' | translate"
+      (click)="onSavePermissions()">
+    </button>
+
+  </ng-template>
+
+</p-dialog>

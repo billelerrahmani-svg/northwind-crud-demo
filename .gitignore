@@ -1,0 +1,27 @@
+# Build output / dependencies
+api/target/
+ui/node_modules/
+ui/dist/
+ui/.angular/
+ui/out-tsc/
+
+# IDE
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+.factorypath
+*.iml
+nbproject/
+
+# Local secrets and logs
+.env
+*.env
+*.log
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db

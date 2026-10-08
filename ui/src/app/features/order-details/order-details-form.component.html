@@ -1,0 +1,152 @@
+<p-card [header]="isEdit() ? ('table.editTitle' | translate) : ('table.addTitle' | translate)">
+  <form [formGroup]="form">
+    <div class="formgrid grid">
+      <div class="field col-12 md:col-6">
+        <label>{{ 'fields.order-details.orderid' | translate }}</label>
+        <div class="flex gap-2">
+          <input pInputText class="w-full flex-1" [value]="OrderidDisplay()" readonly />
+          <button pButton type="button" icon="pi pi-search" [disabled]="isEdit()" (click)="openOrderidPicker()"></button>
+        </div>
+    <app-field-error [control]="form.get('orderid')" />
+      </div>
+      <div class="field col-12 md:col-6">
+        <label>{{ 'fields.order-details.productid' | translate }}</label>
+        <div class="flex gap-2">
+          <input pInputText class="w-full flex-1" [value]="ProductidDisplay()" readonly />
+          <button pButton type="button" icon="pi pi-search" [disabled]="isEdit()" (click)="openProductidPicker()"></button>
+        </div>
+    <app-field-error [control]="form.get('productid')" />
+      </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.order-details.unitprice' | translate }}</label>
+    <p-inputNumber formControlName="unitprice" styleClass="w-full" [maxFractionDigits]="4" />
+    <app-field-error [control]="form.get('unitprice')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.order-details.quantity' | translate }}</label>
+    <p-inputNumber formControlName="quantity" styleClass="w-full" [maxFractionDigits]="0" [min]="-32768" [max]="32767" />
+    <app-field-error [control]="form.get('quantity')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.order-details.discount' | translate }}</label>
+    <p-inputNumber formControlName="discount" styleClass="w-full" />
+    <app-field-error [control]="form.get('discount')" />
+  </div>
+
+    </div>
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button pButton type="button" [label]="'common.cancel' | translate" text (click)="onCancel()"></button>
+      <!-- Volontairement actif même si le formulaire est invalide : le clic
+           fait alors apparaître les messages sous les champs fautifs. -->
+      <button pButton type="button" [label]="'common.save' | translate" (click)="onSave()"></button>
+    </div>
+  </form>
+</p-card>
+
+<p-dialog
+  [header]="'fields.order-details.orderid' | translate"
+  [(visible)]="OrderidPickerVisible"
+  [modal]="true"
+  [style]="{ width: '50rem' }">
+  <input
+    pInputText
+    type="text"
+    class="w-full mb-3"
+    [placeholder]="'table.searchPlaceholder' | translate"
+    (input)="onOrderidPickerSearch($any($event.target).value, OrderidDt)">
+  <p-table
+    #OrderidDt
+    [value]="OrderidPickerRows()"
+    [lazy]="true"
+    (onLazyLoad)="onOrderidPickerLoad($event)"
+    [totalRecords]="OrderidPickerTotal()"
+    [loading]="OrderidPickerLoading()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'fields.orders.customerid' | translate }}</th>
+        <th>{{ 'fields.orders.employeeid' | translate }}</th>
+        <th>{{ 'fields.orders.orderdate' | translate }}</th>
+        <th>{{ 'fields.orders.requireddate' | translate }}</th>
+        <th>{{ 'fields.orders.shippeddate' | translate }}</th>
+        <th>{{ 'fields.orders.shipvia' | translate }}</th>
+        <th>{{ 'fields.orders.freight' | translate }}</th>
+        <th>{{ 'fields.orders.shipname' | translate }}</th>
+        <th>{{ 'fields.orders.shipaddress' | translate }}</th>
+        <th>{{ 'fields.orders.shipcity' | translate }}</th>
+        <th>{{ 'fields.orders.shipregion' | translate }}</th>
+        <th>{{ 'fields.orders.shippostalcode' | translate }}</th>
+        <th>{{ 'fields.orders.shipcountry' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr class="cursor-pointer" (click)="selectOrderid(row)">
+        <td>{{ row.customerid }}</td>
+        <td>{{ row.employeeid }}</td>
+        <td>{{ row.orderdate }}</td>
+        <td>{{ row.requireddate }}</td>
+        <td>{{ row.shippeddate }}</td>
+        <td>{{ row.shipvia }}</td>
+        <td>{{ row.freight }}</td>
+        <td>{{ row.shipname }}</td>
+        <td>{{ row.shipaddress }}</td>
+        <td>{{ row.shipcity }}</td>
+        <td>{{ row.shipregion }}</td>
+        <td>{{ row.shippostalcode }}</td>
+        <td>{{ row.shipcountry }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>
+
+<p-dialog
+  [header]="'fields.order-details.productid' | translate"
+  [(visible)]="ProductidPickerVisible"
+  [modal]="true"
+  [style]="{ width: '50rem' }">
+  <input
+    pInputText
+    type="text"
+    class="w-full mb-3"
+    [placeholder]="'table.searchPlaceholder' | translate"
+    (input)="onProductidPickerSearch($any($event.target).value, ProductidDt)">
+  <p-table
+    #ProductidDt
+    [value]="ProductidPickerRows()"
+    [lazy]="true"
+    (onLazyLoad)="onProductidPickerLoad($event)"
+    [totalRecords]="ProductidPickerTotal()"
+    [loading]="ProductidPickerLoading()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'fields.products.productname' | translate }}</th>
+        <th>{{ 'fields.products.supplierid' | translate }}</th>
+        <th>{{ 'fields.products.categoryid' | translate }}</th>
+        <th>{{ 'fields.products.quantityperunit' | translate }}</th>
+        <th>{{ 'fields.products.unitprice' | translate }}</th>
+        <th>{{ 'fields.products.unitsinstock' | translate }}</th>
+        <th>{{ 'fields.products.unitsonorder' | translate }}</th>
+        <th>{{ 'fields.products.reorderlevel' | translate }}</th>
+        <th>{{ 'fields.products.discontinued' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr class="cursor-pointer" (click)="selectProductid(row)">
+        <td>{{ row.productname }}</td>
+        <td>{{ row.supplierid }}</td>
+        <td>{{ row.categoryid }}</td>
+        <td>{{ row.quantityperunit }}</td>
+        <td>{{ row.unitprice }}</td>
+        <td>{{ row.unitsinstock }}</td>
+        <td>{{ row.unitsonorder }}</td>
+        <td>{{ row.reorderlevel }}</td>
+        <td>{{ row.discontinued }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>

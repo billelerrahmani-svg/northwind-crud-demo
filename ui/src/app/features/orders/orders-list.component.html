@@ -1,0 +1,142 @@
+            <div class="flex justify-content-between align-items-center mb-4">
+              <h2 class="m-0">{{ 'entities.orders' | translate }}</h2>
+              <div class="flex gap-2">
+                <button
+                  pButton
+                  type="button"
+                  [label]="'common.export' | translate"
+                  icon="pi pi-file-excel"
+                  severity="secondary"
+                  outlined
+                  [disabled]="!totalRecords()"
+                  (click)="exportExcel()">
+                </button>
+                @if (canAdd) {
+                  <button
+                    pButton
+                    type="button"
+                    [label]="'common.add' | translate"
+                    icon="pi pi-plus"
+                    (click)="openCreate()">
+                  </button>
+                }
+              </div>
+            </div>
+
+            <p-table
+              #dt
+              [value]="items()"
+              [lazy]="true"
+              (onLazyLoad)="load($event)"
+              [totalRecords]="totalRecords()"
+              [loading]="loading()"
+              [paginator]="true"
+              [rows]="15"
+              [rowsPerPageOptions]="[15, 25, 50]"
+              [resizableColumns]="true"
+              [rowHover]="true"
+              styleClass="p-datatable-striped p-datatable-gridlines"
+              responsiveLayout="scroll">
+
+              <ng-template pTemplate="caption">
+                <div class="flex justify-content-end">
+                  <input
+                    pInputText
+                    type="text"
+                    [placeholder]="'table.searchPlaceholder' | translate"
+                    (input)="onGlobalSearch($any($event.target).value, dt)">
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="customerid">
+                    {{ 'fields.orders.customerid' | translate }} <p-sortIcon field="customerid" />
+                  </th>
+                  <th pSortableColumn="employeeid">
+                    {{ 'fields.orders.employeeid' | translate }} <p-sortIcon field="employeeid" />
+                  </th>
+                  <th pSortableColumn="orderdate">
+                    {{ 'fields.orders.orderdate' | translate }} <p-sortIcon field="orderdate" />
+                  </th>
+                  <th pSortableColumn="requireddate">
+                    {{ 'fields.orders.requireddate' | translate }} <p-sortIcon field="requireddate" />
+                  </th>
+                  <th pSortableColumn="shippeddate">
+                    {{ 'fields.orders.shippeddate' | translate }} <p-sortIcon field="shippeddate" />
+                  </th>
+                  <th pSortableColumn="shipvia">
+                    {{ 'fields.orders.shipvia' | translate }} <p-sortIcon field="shipvia" />
+                  </th>
+                  <th pSortableColumn="freight">
+                    {{ 'fields.orders.freight' | translate }} <p-sortIcon field="freight" />
+                  </th>
+                  <th pSortableColumn="shipname">
+                    {{ 'fields.orders.shipname' | translate }} <p-sortIcon field="shipname" />
+                  </th>
+                  <th pSortableColumn="shipaddress">
+                    {{ 'fields.orders.shipaddress' | translate }} <p-sortIcon field="shipaddress" />
+                  </th>
+                  <th pSortableColumn="shipcity">
+                    {{ 'fields.orders.shipcity' | translate }} <p-sortIcon field="shipcity" />
+                  </th>
+                  <th pSortableColumn="shipregion">
+                    {{ 'fields.orders.shipregion' | translate }} <p-sortIcon field="shipregion" />
+                  </th>
+                  <th pSortableColumn="shippostalcode">
+                    {{ 'fields.orders.shippostalcode' | translate }} <p-sortIcon field="shippostalcode" />
+                  </th>
+                  <th pSortableColumn="shipcountry">
+                    {{ 'fields.orders.shipcountry' | translate }} <p-sortIcon field="shipcountry" />
+                  </th>
+
+                  @if (canEditRow || canDeleteRow) {
+                    <th style="width:8rem"></th>
+                  }
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-item>
+                <tr>
+                  <td>{{ item.customerid }}</td>
+                  <td>{{ item.employeeid | number:'1.0-2':'fr-FR' }}</td>
+                  <td>{{ item.orderdate | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.requireddate | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.shippeddate | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ item.shipvia | number:'1.0-2':'fr-FR' }}</td>
+                  <td>{{ item.freight | number:'1.0-2':'fr-FR' }}</td>
+                  <td>{{ item.shipname }}</td>
+                  <td>{{ item.shipaddress }}</td>
+                  <td>{{ item.shipcity }}</td>
+                  <td>{{ item.shipregion }}</td>
+                  <td>{{ item.shippostalcode }}</td>
+                  <td>{{ item.shipcountry }}</td>
+
+                  @if (canEditRow || canDeleteRow) {
+                    <td>
+                      <div class="flex justify-content-end gap-2">
+                        @if (canEditRow) {
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-pencil"
+                            text
+                            (click)="openEdit(item)">
+                          </button>
+                        }
+                        @if (canDeleteRow) {
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-trash"
+                            severity="danger"
+                            text
+                            (click)="confirmDelete(item)">
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+            </p-table>

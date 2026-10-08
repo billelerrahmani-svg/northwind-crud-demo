@@ -1,0 +1,67 @@
+<p-card [header]="isEdit() ? ('table.editTitle' | translate) : ('table.addTitle' | translate)">
+  <form [formGroup]="form">
+    <div class="formgrid grid">
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.territories.territoryid' | translate }}</label>
+    <input pInputText formControlName="territoryid" class="w-full" maxlength="20" />
+    <app-field-error [control]="form.get('territoryid')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.territories.territorydescription' | translate }}</label>
+    <input pInputText formControlName="territorydescription" class="w-full" maxlength="50" />
+    <app-field-error [control]="form.get('territorydescription')" />
+  </div>
+      <div class="field col-12 md:col-6">
+        <label>{{ 'fields.territories.regionid' | translate }}</label>
+        <div class="flex gap-2">
+          <input pInputText class="w-full flex-1" [value]="RegionidDisplay()" readonly />
+          <button pButton type="button" icon="pi pi-search" (click)="openRegionidPicker()"></button>
+        </div>
+    <app-field-error [control]="form.get('regionid')" />
+      </div>
+
+    </div>
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button pButton type="button" [label]="'common.cancel' | translate" text (click)="onCancel()"></button>
+      <!-- Volontairement actif même si le formulaire est invalide : le clic
+           fait alors apparaître les messages sous les champs fautifs. -->
+      <button pButton type="button" [label]="'common.save' | translate" (click)="onSave()"></button>
+    </div>
+  </form>
+</p-card>
+
+<p-dialog
+  [header]="'fields.territories.regionid' | translate"
+  [(visible)]="RegionidPickerVisible"
+  [modal]="true"
+  [style]="{ width: '50rem' }">
+  <input
+    pInputText
+    type="text"
+    class="w-full mb-3"
+    [placeholder]="'table.searchPlaceholder' | translate"
+    (input)="onRegionidPickerSearch($any($event.target).value, RegionidDt)">
+  <p-table
+    #RegionidDt
+    [value]="RegionidPickerRows()"
+    [lazy]="true"
+    (onLazyLoad)="onRegionidPickerLoad($event)"
+    [totalRecords]="RegionidPickerTotal()"
+    [loading]="RegionidPickerLoading()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'fields.region.regionid' | translate }}</th>
+        <th>{{ 'fields.region.regiondescription' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr class="cursor-pointer" (click)="selectRegionid(row)">
+        <td>{{ row.regionid }}</td>
+        <td>{{ row.regiondescription }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>

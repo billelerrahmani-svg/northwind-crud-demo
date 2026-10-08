@@ -1,0 +1,134 @@
+            <div class="flex justify-content-between align-items-center mb-4">
+              <h2 class="m-0">{{ 'entities.customers' | translate }}</h2>
+              <div class="flex gap-2">
+                <button
+                  pButton
+                  type="button"
+                  [label]="'common.export' | translate"
+                  icon="pi pi-file-excel"
+                  severity="secondary"
+                  outlined
+                  [disabled]="!totalRecords()"
+                  (click)="exportExcel()">
+                </button>
+                @if (canAdd) {
+                  <button
+                    pButton
+                    type="button"
+                    [label]="'common.add' | translate"
+                    icon="pi pi-plus"
+                    (click)="openCreate()">
+                  </button>
+                }
+              </div>
+            </div>
+
+            <p-table
+              #dt
+              [value]="items()"
+              [lazy]="true"
+              (onLazyLoad)="load($event)"
+              [totalRecords]="totalRecords()"
+              [loading]="loading()"
+              [paginator]="true"
+              [rows]="15"
+              [rowsPerPageOptions]="[15, 25, 50]"
+              [resizableColumns]="true"
+              [rowHover]="true"
+              styleClass="p-datatable-striped p-datatable-gridlines"
+              responsiveLayout="scroll">
+
+              <ng-template pTemplate="caption">
+                <div class="flex justify-content-end">
+                  <input
+                    pInputText
+                    type="text"
+                    [placeholder]="'table.searchPlaceholder' | translate"
+                    (input)="onGlobalSearch($any($event.target).value, dt)">
+                </div>
+              </ng-template>
+
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="customerid">
+                    {{ 'fields.customers.customerid' | translate }} <p-sortIcon field="customerid" />
+                  </th>
+                  <th pSortableColumn="companyname">
+                    {{ 'fields.customers.companyname' | translate }} <p-sortIcon field="companyname" />
+                  </th>
+                  <th pSortableColumn="contactname">
+                    {{ 'fields.customers.contactname' | translate }} <p-sortIcon field="contactname" />
+                  </th>
+                  <th pSortableColumn="contacttitle">
+                    {{ 'fields.customers.contacttitle' | translate }} <p-sortIcon field="contacttitle" />
+                  </th>
+                  <th pSortableColumn="address">
+                    {{ 'fields.customers.address' | translate }} <p-sortIcon field="address" />
+                  </th>
+                  <th pSortableColumn="city">
+                    {{ 'fields.customers.city' | translate }} <p-sortIcon field="city" />
+                  </th>
+                  <th pSortableColumn="region">
+                    {{ 'fields.customers.region' | translate }} <p-sortIcon field="region" />
+                  </th>
+                  <th pSortableColumn="postalcode">
+                    {{ 'fields.customers.postalcode' | translate }} <p-sortIcon field="postalcode" />
+                  </th>
+                  <th pSortableColumn="country">
+                    {{ 'fields.customers.country' | translate }} <p-sortIcon field="country" />
+                  </th>
+                  <th pSortableColumn="phone">
+                    {{ 'fields.customers.phone' | translate }} <p-sortIcon field="phone" />
+                  </th>
+                  <th pSortableColumn="fax">
+                    {{ 'fields.customers.fax' | translate }} <p-sortIcon field="fax" />
+                  </th>
+
+                  @if (canEditRow || canDeleteRow) {
+                    <th style="width:8rem"></th>
+                  }
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate="body" let-item>
+                <tr>
+                  <td>{{ item.customerid }}</td>
+                  <td>{{ item.companyname }}</td>
+                  <td>{{ item.contactname }}</td>
+                  <td>{{ item.contacttitle }}</td>
+                  <td>{{ item.address }}</td>
+                  <td>{{ item.city }}</td>
+                  <td>{{ item.region }}</td>
+                  <td>{{ item.postalcode }}</td>
+                  <td>{{ item.country }}</td>
+                  <td>{{ item.phone }}</td>
+                  <td>{{ item.fax }}</td>
+
+                  @if (canEditRow || canDeleteRow) {
+                    <td>
+                      <div class="flex justify-content-end gap-2">
+                        @if (canEditRow) {
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-pencil"
+                            text
+                            (click)="openEdit(item)">
+                          </button>
+                        }
+                        @if (canDeleteRow) {
+                          <button
+                            pButton
+                            type="button"
+                            icon="pi pi-trash"
+                            severity="danger"
+                            text
+                            (click)="confirmDelete(item)">
+                          </button>
+                        }
+                      </div>
+                    </td>
+                  }
+                </tr>
+              </ng-template>
+            </p-table>

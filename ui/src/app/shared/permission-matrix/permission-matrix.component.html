@@ -1,0 +1,32 @@
+<p-table
+  [value]="rows()"
+  [scrollable]="true"
+  scrollHeight="400px">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>{{ 'admin.permissionMatrix.method' | translate }}</th>
+      <th>{{ 'admin.permissionMatrix.endpoint' | translate }}</th>
+      <th>{{ 'admin.permissionMatrix.right' | translate }}</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-row>
+    <tr>
+      <td>{{ row.httpMethod }}</td>
+      <td>{{ row.pathPattern }}</td>
+      <td>
+        <p-selectbutton
+          [options]="effectOptions"
+          [(ngModel)]="row.effect"
+          optionLabel="label"
+          optionValue="value"
+          (onChange)="onChange()">
+                      <ng-template pTemplate="item" let-item>
+                        {{ item.label | translate }}
+                      </ng-template>
+        </p-selectbutton>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

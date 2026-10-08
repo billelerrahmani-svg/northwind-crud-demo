@@ -1,0 +1,168 @@
+<p-card [header]="isEdit() ? ('table.editTitle' | translate) : ('table.addTitle' | translate)">
+  <form [formGroup]="form">
+    <div class="formgrid grid">
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.lastname' | translate }}</label>
+    <input pInputText formControlName="lastname" class="w-full" maxlength="20" />
+    <app-field-error [control]="form.get('lastname')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.firstname' | translate }}</label>
+    <input pInputText formControlName="firstname" class="w-full" maxlength="10" />
+    <app-field-error [control]="form.get('firstname')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.title' | translate }}</label>
+    <input pInputText formControlName="title" class="w-full" maxlength="30" />
+    <app-field-error [control]="form.get('title')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.titleofcourtesy' | translate }}</label>
+    <input pInputText formControlName="titleofcourtesy" class="w-full" maxlength="25" />
+    <app-field-error [control]="form.get('titleofcourtesy')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.birthdate' | translate }}</label>
+    <p-datepicker formControlName="birthdate" [showTime]="true" dateFormat="dd/mm/yy" styleClass="w-full" [minDate]="birthdateMinDate" [maxDate]="birthdateMaxDate" />
+    <app-field-error [control]="form.get('birthdate')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.hiredate' | translate }}</label>
+    <p-datepicker formControlName="hiredate" [showTime]="true" dateFormat="dd/mm/yy" styleClass="w-full" [minDate]="hiredateMinDate" [maxDate]="hiredateMaxDate" />
+    <app-field-error [control]="form.get('hiredate')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.address' | translate }}</label>
+    <input pInputText formControlName="address" class="w-full" maxlength="60" />
+    <app-field-error [control]="form.get('address')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.city' | translate }}</label>
+    <input pInputText formControlName="city" class="w-full" maxlength="15" />
+    <app-field-error [control]="form.get('city')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.region' | translate }}</label>
+    <input pInputText formControlName="region" class="w-full" maxlength="15" />
+    <app-field-error [control]="form.get('region')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.postalcode' | translate }}</label>
+    <input pInputText formControlName="postalcode" class="w-full" maxlength="10" />
+    <app-field-error [control]="form.get('postalcode')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.country' | translate }}</label>
+    <input pInputText formControlName="country" class="w-full" maxlength="15" />
+    <app-field-error [control]="form.get('country')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.homephone' | translate }}</label>
+    <input pInputText formControlName="homephone" class="w-full" maxlength="24" />
+    <app-field-error [control]="form.get('homephone')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.extension' | translate }}</label>
+    <input pInputText formControlName="extension" class="w-full" maxlength="4" />
+    <app-field-error [control]="form.get('extension')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.photo' | translate }}</label>
+    <input pInputText formControlName="photo" class="w-full" />
+    <app-field-error [control]="form.get('photo')" />
+  </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.notes' | translate }}</label>
+    <input pInputText formControlName="notes" class="w-full" />
+    <app-field-error [control]="form.get('notes')" />
+  </div>
+      <div class="field col-12 md:col-6">
+        <label>{{ 'fields.employees.reportsto' | translate }}</label>
+        <div class="flex gap-2">
+          <input pInputText class="w-full flex-1" [value]="ReportstoDisplay()" readonly />
+          <button pButton type="button" icon="pi pi-search" (click)="openReportstoPicker()"></button>
+          <button pButton type="button" icon="pi pi-times" severity="secondary" text (click)="clearReportsto()"></button>
+        </div>
+    <app-field-error [control]="form.get('reportsto')" />
+      </div>
+  <div class="field col-12 md:col-6">
+    <label>{{ 'fields.employees.photopath' | translate }}</label>
+    <input pInputText formControlName="photopath" class="w-full" maxlength="255" />
+    <app-field-error [control]="form.get('photopath')" />
+  </div>
+
+    </div>
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button pButton type="button" [label]="'common.cancel' | translate" text (click)="onCancel()"></button>
+      <!-- Volontairement actif même si le formulaire est invalide : le clic
+           fait alors apparaître les messages sous les champs fautifs. -->
+      <button pButton type="button" [label]="'common.save' | translate" (click)="onSave()"></button>
+    </div>
+  </form>
+</p-card>
+
+<p-dialog
+  [header]="'fields.employees.reportsto' | translate"
+  [(visible)]="ReportstoPickerVisible"
+  [modal]="true"
+  [style]="{ width: '50rem' }">
+  <input
+    pInputText
+    type="text"
+    class="w-full mb-3"
+    [placeholder]="'table.searchPlaceholder' | translate"
+    (input)="onReportstoPickerSearch($any($event.target).value, ReportstoDt)">
+  <p-table
+    #ReportstoDt
+    [value]="ReportstoPickerRows()"
+    [lazy]="true"
+    (onLazyLoad)="onReportstoPickerLoad($event)"
+    [totalRecords]="ReportstoPickerTotal()"
+    [loading]="ReportstoPickerLoading()"
+    [paginator]="true"
+    [rows]="10"
+    responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>{{ 'fields.employees.lastname' | translate }}</th>
+        <th>{{ 'fields.employees.firstname' | translate }}</th>
+        <th>{{ 'fields.employees.title' | translate }}</th>
+        <th>{{ 'fields.employees.titleofcourtesy' | translate }}</th>
+        <th>{{ 'fields.employees.birthdate' | translate }}</th>
+        <th>{{ 'fields.employees.hiredate' | translate }}</th>
+        <th>{{ 'fields.employees.address' | translate }}</th>
+        <th>{{ 'fields.employees.city' | translate }}</th>
+        <th>{{ 'fields.employees.region' | translate }}</th>
+        <th>{{ 'fields.employees.postalcode' | translate }}</th>
+        <th>{{ 'fields.employees.country' | translate }}</th>
+        <th>{{ 'fields.employees.homephone' | translate }}</th>
+        <th>{{ 'fields.employees.extension' | translate }}</th>
+        <th>{{ 'fields.employees.photo' | translate }}</th>
+        <th>{{ 'fields.employees.notes' | translate }}</th>
+        <th>{{ 'fields.employees.reportsto' | translate }}</th>
+        <th>{{ 'fields.employees.photopath' | translate }}</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row>
+      <tr class="cursor-pointer" (click)="selectReportsto(row)">
+        <td>{{ row.lastname }}</td>
+        <td>{{ row.firstname }}</td>
+        <td>{{ row.title }}</td>
+        <td>{{ row.titleofcourtesy }}</td>
+        <td>{{ row.birthdate }}</td>
+        <td>{{ row.hiredate }}</td>
+        <td>{{ row.address }}</td>
+        <td>{{ row.city }}</td>
+        <td>{{ row.region }}</td>
+        <td>{{ row.postalcode }}</td>
+        <td>{{ row.country }}</td>
+        <td>{{ row.homephone }}</td>
+        <td>{{ row.extension }}</td>
+        <td>{{ row.photo }}</td>
+        <td>{{ row.notes }}</td>
+        <td>{{ row.reportsto }}</td>
+        <td>{{ row.photopath }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>
