@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,7 +26,7 @@ import { RegionService } from '../../core/services/region.service';
   templateUrl: './region-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegionFormComponent {
+export class RegionFormComponent implements OnInit {
   private readonly service = inject(RegionService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -40,7 +40,9 @@ export class RegionFormComponent {
   constructor() {
     this.form.addControl('regionid', new FormControl<any>(null, [Validators.required, Validators.min(-2147483648), Validators.max(2147483647)]));
     this.form.addControl('regiondescription', new FormControl<any>(null, [Validators.required, exactLength(50)]));
+  }
 
+  ngOnInit(): void {
     const regionidValue = this.regionid();
 
     if (regionidValue) {

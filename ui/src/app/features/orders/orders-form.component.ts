@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -36,7 +36,7 @@ import { OrdersService } from '../../core/services/orders.service';
   templateUrl: './orders-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrdersFormComponent {
+export class OrdersFormComponent implements OnInit {
   private readonly service = inject(OrdersService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -76,7 +76,9 @@ export class OrdersFormComponent {
     this.form.addControl('shipregion', new FormControl<any>(null, [Validators.maxLength(15)]));
     this.form.addControl('shippostalcode', new FormControl<any>(null, [Validators.maxLength(10)]));
     this.form.addControl('shipcountry', new FormControl<any>(null, [Validators.maxLength(15)]));
+  }
 
+  ngOnInit(): void {
     const orderidValue = this.orderid();
 
     if (orderidValue) {

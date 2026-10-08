@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -28,7 +28,7 @@ import { EmployeesService } from '../../core/services/employees.service';
   templateUrl: './employees-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeesFormComponent {
+export class EmployeesFormComponent implements OnInit {
   private readonly service = inject(EmployeesService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -65,7 +65,9 @@ export class EmployeesFormComponent {
     this.form.addControl('notes', new FormControl<any>(null));
     this.form.addControl('reportsto', new FormControl<any>(null, [Validators.min(-2147483648), Validators.max(2147483647)]));
     this.form.addControl('photopath', new FormControl<any>(null, [Validators.maxLength(255)]));
+  }
 
+  ngOnInit(): void {
     const employeeidValue = this.employeeid();
 
     if (employeeidValue) {

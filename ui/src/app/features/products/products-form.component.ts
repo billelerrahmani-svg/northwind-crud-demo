@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -33,7 +33,7 @@ import { ProductsService } from '../../core/services/products.service';
   templateUrl: './products-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductsFormComponent {
+export class ProductsFormComponent implements OnInit {
   private readonly service = inject(ProductsService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -56,7 +56,9 @@ export class ProductsFormComponent {
     this.form.addControl('unitsonorder', new FormControl<any>(null, [Validators.min(-32768), Validators.max(32767)]));
     this.form.addControl('reorderlevel', new FormControl<any>(null, [Validators.min(-32768), Validators.max(32767)]));
     this.form.addControl('discontinued', new FormControl<any>(false));
+  }
 
+  ngOnInit(): void {
     const productidValue = this.productid();
 
     if (productidValue) {

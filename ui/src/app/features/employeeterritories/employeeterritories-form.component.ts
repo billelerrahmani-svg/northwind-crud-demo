@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -31,7 +31,7 @@ import { EmployeeterritoriesService } from '../../core/services/employeeterritor
   templateUrl: './employeeterritories-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EmployeeterritoriesFormComponent {
+export class EmployeeterritoriesFormComponent implements OnInit {
   private readonly service = inject(EmployeeterritoriesService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -48,7 +48,9 @@ export class EmployeeterritoriesFormComponent {
   constructor() {
     this.form.addControl('employeeid', new FormControl<any>(null, [Validators.required, Validators.min(-2147483648), Validators.max(2147483647)]));
     this.form.addControl('territoryid', new FormControl<any>(null, [Validators.required, Validators.maxLength(20)]));
+  }
 
+  ngOnInit(): void {
     const employeeidValue = this.employeeid();
     const territoryidValue = this.territoryid();
 

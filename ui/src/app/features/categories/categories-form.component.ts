@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -24,7 +24,7 @@ import { CategoriesService } from '../../core/services/categories.service';
   templateUrl: './categories-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoriesFormComponent {
+export class CategoriesFormComponent implements OnInit {
   private readonly service = inject(CategoriesService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -39,7 +39,9 @@ export class CategoriesFormComponent {
     this.form.addControl('categoryname', new FormControl<any>(null, [Validators.required, Validators.maxLength(15)]));
     this.form.addControl('description', new FormControl<any>(null));
     this.form.addControl('picture', new FormControl<any>(null));
+  }
 
+  ngOnInit(): void {
     const categoryidValue = this.categoryid();
 
     if (categoryidValue) {

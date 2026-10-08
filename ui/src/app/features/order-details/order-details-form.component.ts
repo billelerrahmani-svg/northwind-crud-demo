@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -32,7 +32,7 @@ import { OrderDetailsService } from '../../core/services/order-details.service';
   templateUrl: './order-details-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrderDetailsFormComponent {
+export class OrderDetailsFormComponent implements OnInit {
   private readonly service = inject(OrderDetailsService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -52,7 +52,9 @@ export class OrderDetailsFormComponent {
     this.form.addControl('unitprice', new FormControl<any>(null, [Validators.required]));
     this.form.addControl('quantity', new FormControl<any>(null, [Validators.required, Validators.min(-32768), Validators.max(32767)]));
     this.form.addControl('discount', new FormControl<any>(null, [Validators.required]));
+  }
 
+  ngOnInit(): void {
     const orderidValue = this.orderid();
     const productidValue = this.productid();
 

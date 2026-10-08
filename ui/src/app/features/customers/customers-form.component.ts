@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -25,7 +25,7 @@ import { CustomersService } from '../../core/services/customers.service';
   templateUrl: './customers-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CustomersFormComponent {
+export class CustomersFormComponent implements OnInit {
   private readonly service = inject(CustomersService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -48,7 +48,9 @@ export class CustomersFormComponent {
     this.form.addControl('country', new FormControl<any>(null, [Validators.maxLength(15)]));
     this.form.addControl('phone', new FormControl<any>(null, [Validators.maxLength(24)]));
     this.form.addControl('fax', new FormControl<any>(null, [Validators.maxLength(24)]));
+  }
 
+  ngOnInit(): void {
     const customeridValue = this.customerid();
 
     if (customeridValue) {

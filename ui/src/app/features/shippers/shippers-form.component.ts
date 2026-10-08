@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -24,7 +24,7 @@ import { ShippersService } from '../../core/services/shippers.service';
   templateUrl: './shippers-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ShippersFormComponent {
+export class ShippersFormComponent implements OnInit {
   private readonly service = inject(ShippersService);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
@@ -38,7 +38,9 @@ export class ShippersFormComponent {
   constructor() {
     this.form.addControl('companyname', new FormControl<any>(null, [Validators.required, Validators.maxLength(40)]));
     this.form.addControl('phone', new FormControl<any>(null, [Validators.maxLength(24)]));
+  }
 
+  ngOnInit(): void {
     const shipperidValue = this.shipperid();
 
     if (shipperidValue) {
